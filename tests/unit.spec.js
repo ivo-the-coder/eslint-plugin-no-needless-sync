@@ -245,4 +245,121 @@ describe('needless-await-synchronisation', () => {
       ]
     });
   });
+
+  describe('handles an intermediate dependency', () => {
+    ruleTester.run("needless-await-synchronisation", rule, {
+      valid: [
+         `
+        const f = async () => {
+          const { data } = await fa();
+          const x = data.a
+          const c = await fb(x);
+        }
+        `,
+      ],
+      invalid: [
+        {
+          code:`
+          const f = async () => {
+            const a = 0
+            const { data } = await fa(a);
+            const x = data.a; 
+            const c = await fb(a);
+          }
+          `,
+          errors: [
+            { message: "Unneeded synchronisation, please use Promise.all()" },
+            { message: "Unneeded synchronisation, please use Promise.all()" }
+          ],
+        },
+      ]
+    });
+  });
+
+  describe('handles an if-statement', () => {
+    ruleTester.run("needless-await-synchronisation", rule, {
+      valid: [
+         `
+        const f = async () => {
+          const { data } = await fa();
+          if (data.a) {
+            const c = await fb(x);
+          }
+        }
+        `,
+         `
+        const f = async () => {
+          const { data } = await fa();
+          if (data.a) {
+            if (data.b) {
+              const c = await fb(x);
+            }
+          }
+        }
+        `,
+         `
+        const f = async () => {
+          const { data } = await fa();
+          if (b) {
+            const c = fb(x);
+          }
+        }
+        `,
+         `
+        const f = async () => {
+          const { data } = await fa();
+          if (b) {
+            fb(x);
+          }
+        }
+        `,
+      ],
+      invalid: [
+        {
+          code:`
+          const f = async (b) => {
+            const { data } = await fa();
+            if (b) {
+              const c = await fb(x);
+            }
+          }
+          `,
+          errors: [
+            { message: "Unneeded synchronisation, please use Promise.all()" },
+            { message: "Unneeded synchronisation, please use Promise.all()" }
+          ],
+        },
+        {
+          code:`
+          const f = async (b) => {
+            const { data } = await fa();
+            if (b) {
+              if (b.c) {
+                const c = await fb(x);
+              }
+            }
+          }
+          `,
+          errors: [
+            { message: "Unneeded synchronisation, please use Promise.all()" },
+            { message: "Unneeded synchronisation, please use Promise.all()" }
+          ],
+        },
+        {
+          code:`
+          const f = async (b) => {
+            const { data } = await fa();
+            if (await fb(x)) {
+              return null;
+            }
+          }
+          `,
+          errors: [
+            { message: "Unneeded synchronisation, please use Promise.all()" },
+            { message: "Unneeded synchronisation, please use Promise.all()" }
+          ],
+        },
+      ]
+    });
+  });
 })
