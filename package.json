@@ -11,7 +11,7 @@
   "main": "lib/index.js",
   "scripts": {
     "lint": "eslint .",
-    "test:unit": "jest \"^.*(tests).*/unit.spec.js\"",
+    "test:unit": "jest \"^.*(lib).*.spec.js\"",
     "test:integration": "jest \"^.*(tests).*/integration.spec.js\""
   },
   "dependencies": {
