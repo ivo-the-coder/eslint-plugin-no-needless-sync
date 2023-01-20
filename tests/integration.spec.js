@@ -416,4 +416,49 @@ describe('needless-await-synchronisation', () => {
       ]
     });
   });
+
+  describe('handles await in callee of call expressions', () => {
+    ruleTester.run("needless-await-synchronisation", rule, {
+      valid: [
+        `
+        const f = async () => {
+          const { data } = await fa();
+          const b = (await fb(data))();
+        }
+        `,
+        `
+        const f = async () => {
+          const { data } = await fa();
+          const b = fb(await fc(data))();
+        }
+        `,
+      ],
+      invalid: [
+        {
+          code: `
+          const f = async () => {
+            const { data } = await fa();
+            const b = (await fb())();
+          } 
+          `,
+          errors: [
+            { message: "Unneeded synchronisation, please use Promise.all()" },
+            { message: "Unneeded synchronisation, please use Promise.all()" }
+          ],
+        },
+        {
+          code: `
+          const f = async () => {
+            const { data } = await fa();
+            const b = fb(await fc())();
+          } 
+          `,
+          errors: [
+            { message: "Unneeded synchronisation, please use Promise.all()" },
+            { message: "Unneeded synchronisation, please use Promise.all()" }
+          ],
+        },
+      ]
+    });
+  });
 });
