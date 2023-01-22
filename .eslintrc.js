@@ -5,16 +5,18 @@ module.exports = {
   parser: "@babel/eslint-parser",
   parserOptions: {
     ecmaVersion: 2017,
-    requireConfigFile: false
+    requireConfigFile: false,
   },
   extends: [
     "eslint:recommended",
     "plugin:eslint-plugin/recommended",
     "plugin:node/recommended",
+    "prettier",
   ],
   env: {
     node: true,
-    es6: true
+    es6: true,
+    jest: true,
   },
   overrides: [
     {

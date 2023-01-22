@@ -22,25 +22,20 @@ Add `needless-await-synchronisation` to the plugins section of your `.eslintrc` 
 
 ```json
 {
-    "plugins": [
-        "needless-await-synchronisation"
-    ]
+  "plugins": ["needless-await-synchronisation"]
 }
 ```
-
 
 Then configure the rules you want to use under the rules section.
 
 ```json
 {
-    "rules": {
-        "needless-await-synchronisation/rule-name": 2
-    }
+  "rules": {
+    "needless-await-synchronisation/rule-name": 2
+  }
 }
 ```
 
 ## Supported Rules
 
-* Fill in provided rules here
-
-
+- Fill in provided rules here

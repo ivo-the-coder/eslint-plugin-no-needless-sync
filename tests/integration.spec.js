@@ -1,18 +1,18 @@
 "use strict";
 
-describe('needless-await-synchronisation', () => {
+describe("needless-await-synchronisation", () => {
   const rule = require("../lib/rules/needless-await-synchronisation"),
     RuleTester = require("eslint").RuleTester;
 
   RuleTester.setDefaultConfig({
     parserOptions: {
       ecmaVersion: 8,
-      sourceType: "module"
-    }
+      sourceType: "module",
+    },
   });
   const ruleTester = new RuleTester();
 
-  describe('handles a simple case', () => {
+  describe("handles a simple case", () => {
     ruleTester.run("needless-await-synchronisation", rule, {
       valid: [
         `
@@ -20,7 +20,7 @@ describe('needless-await-synchronisation', () => {
           const a = await fa();
           await fb(a);
         }
-        `
+        `,
       ],
       invalid: [
         {
@@ -32,13 +32,13 @@ describe('needless-await-synchronisation', () => {
           `,
           errors: [
             { message: "Unneeded synchronisation, please use Promise.all()" },
-            { message: "Unneeded synchronisation, please use Promise.all()" }
+            { message: "Unneeded synchronisation, please use Promise.all()" },
           ],
-        }
+        },
       ],
     });
-  })
-  describe('handles an arrow function simple', () => {
+  });
+  describe("handles an arrow function simple", () => {
     ruleTester.run("needless-await-synchronisation", rule, {
       valid: [
         `
@@ -46,7 +46,7 @@ describe('needless-await-synchronisation', () => {
           const a = await fa();
           await fb(a);
         }
-        `
+        `,
       ],
       invalid: [
         {
@@ -58,13 +58,13 @@ describe('needless-await-synchronisation', () => {
           `,
           errors: [
             { message: "Unneeded synchronisation, please use Promise.all()" },
-            { message: "Unneeded synchronisation, please use Promise.all()" }
+            { message: "Unneeded synchronisation, please use Promise.all()" },
           ],
-        }
+        },
       ],
     });
-  })
-  describe('handles a simple same argument case', () => {
+  });
+  describe("handles a simple same argument case", () => {
     ruleTester.run("needless-await-synchronisation", rule, {
       valid: [],
       invalid: [
@@ -80,14 +80,14 @@ describe('needless-await-synchronisation', () => {
           errors: [
             { message: "Unneeded synchronisation, please use Promise.all()" },
             { message: "Unneeded synchronisation, please use Promise.all()" },
-            { message: "Unneeded synchronisation, please use Promise.all()" }
+            { message: "Unneeded synchronisation, please use Promise.all()" },
           ],
         },
       ],
     });
-  })
+  });
 
-  describe('handles variables being unused by other awaits', () => {
+  describe("handles variables being unused by other awaits", () => {
     ruleTester.run("needless-await-synchronisation", rule, {
       valid: [
         `
@@ -96,7 +96,7 @@ describe('needless-await-synchronisation', () => {
           const b = await fa(a);
           await fb(b);
         }
-        `
+        `,
       ],
       invalid: [
         {
@@ -109,15 +109,14 @@ describe('needless-await-synchronisation', () => {
           `,
           errors: [
             { message: "Unneeded synchronisation, please use Promise.all()" },
-            { message: "Unneeded synchronisation, please use Promise.all()" }
+            { message: "Unneeded synchronisation, please use Promise.all()" },
           ],
         },
-        
-      ]
+      ],
     });
   });
 
-  describe('handles many variables being unused by other awaits', () => {
+  describe("handles many variables being unused by other awaits", () => {
     ruleTester.run("needless-await-synchronisation", rule, {
       valid: [
         `
@@ -127,7 +126,7 @@ describe('needless-await-synchronisation', () => {
           const c = await fb(b);
           const d = await fc(c);
         }
-        `
+        `,
       ],
       invalid: [
         {
@@ -157,11 +156,11 @@ describe('needless-await-synchronisation', () => {
             { message: "Unneeded synchronisation, please use Promise.all()" },
             { message: "Unneeded synchronisation, please use Promise.all()" },
           ],
-        }
-      ]
+        },
+      ],
     });
   });
-  describe('handles variable properties of great depth', () => {
+  describe("handles variable properties of great depth", () => {
     ruleTester.run("needless-await-synchronisation", rule, {
       valid: [
         `
@@ -170,7 +169,7 @@ describe('needless-await-synchronisation', () => {
           const b = await fa(a.data.c);
           await fb(b.data.d);
         }
-        `
+        `,
       ],
       invalid: [
         {
@@ -183,13 +182,13 @@ describe('needless-await-synchronisation', () => {
           `,
           errors: [
             { message: "Unneeded synchronisation, please use Promise.all()" },
-            { message: "Unneeded synchronisation, please use Promise.all()" }
+            { message: "Unneeded synchronisation, please use Promise.all()" },
           ],
         },
-      ]
+      ],
     });
   });
-  describe('handles functions already in a Promise.all()', () => {
+  describe("handles functions already in a Promise.all()", () => {
     ruleTester.run("needless-await-synchronisation", rule, {
       valid: [
         `
@@ -211,13 +210,13 @@ describe('needless-await-synchronisation', () => {
           `,
           errors: [
             { message: "Unneeded synchronisation, please use Promise.all()" },
-            { message: "Unneeded synchronisation, please use Promise.all()" }
+            { message: "Unneeded synchronisation, please use Promise.all()" },
           ],
         },
-      ]
+      ],
     });
   });
-  describe('handles destructuring', () => {
+  describe("handles destructuring", () => {
     ruleTester.run("needless-await-synchronisation", rule, {
       valid: [
         `
@@ -239,14 +238,14 @@ describe('needless-await-synchronisation', () => {
           `,
           errors: [
             { message: "Unneeded synchronisation, please use Promise.all()" },
-            { message: "Unneeded synchronisation, please use Promise.all()" }
+            { message: "Unneeded synchronisation, please use Promise.all()" },
           ],
         },
-      ]
+      ],
     });
   });
 
-  describe('handles an intermediate dependency', () => {
+  describe("handles an intermediate dependency", () => {
     ruleTester.run("needless-await-synchronisation", rule, {
       valid: [
         `
@@ -269,14 +268,14 @@ describe('needless-await-synchronisation', () => {
           `,
           errors: [
             { message: "Unneeded synchronisation, please use Promise.all()" },
-            { message: "Unneeded synchronisation, please use Promise.all()" }
+            { message: "Unneeded synchronisation, please use Promise.all()" },
           ],
         },
-      ]
+      ],
     });
   });
 
-  describe('handles an if-statement', () => {
+  describe("handles an if-statement", () => {
     ruleTester.run("needless-await-synchronisation", rule, {
       valid: [
         `
@@ -326,7 +325,7 @@ describe('needless-await-synchronisation', () => {
           `,
           errors: [
             { message: "Unneeded synchronisation, please use Promise.all()" },
-            { message: "Unneeded synchronisation, please use Promise.all()" }
+            { message: "Unneeded synchronisation, please use Promise.all()" },
           ],
         },
         {
@@ -342,7 +341,7 @@ describe('needless-await-synchronisation', () => {
           `,
           errors: [
             { message: "Unneeded synchronisation, please use Promise.all()" },
-            { message: "Unneeded synchronisation, please use Promise.all()" }
+            { message: "Unneeded synchronisation, please use Promise.all()" },
           ],
         },
         {
@@ -356,14 +355,14 @@ describe('needless-await-synchronisation', () => {
           `,
           errors: [
             { message: "Unneeded synchronisation, please use Promise.all()" },
-            { message: "Unneeded synchronisation, please use Promise.all()" }
+            { message: "Unneeded synchronisation, please use Promise.all()" },
           ],
         },
-      ]
+      ],
     });
   });
 
-  describe('handles return statements with await', () => {
+  describe("handles return statements with await", () => {
     ruleTester.run("needless-await-synchronisation", rule, {
       valid: [
         `
@@ -383,14 +382,14 @@ describe('needless-await-synchronisation', () => {
           `,
           errors: [
             { message: "Unneeded synchronisation, please use Promise.all()" },
-            { message: "Unneeded synchronisation, please use Promise.all()" }
+            { message: "Unneeded synchronisation, please use Promise.all()" },
           ],
         },
-      ]
+      ],
     });
   });
 
-  describe('handles await in array expressions', () => {
+  describe("handles await in array expressions", () => {
     ruleTester.run("needless-await-synchronisation", rule, {
       valid: [
         `
@@ -410,14 +409,14 @@ describe('needless-await-synchronisation', () => {
           `,
           errors: [
             { message: "Unneeded synchronisation, please use Promise.all()" },
-            { message: "Unneeded synchronisation, please use Promise.all()" }
+            { message: "Unneeded synchronisation, please use Promise.all()" },
           ],
         },
-      ]
+      ],
     });
   });
 
-  describe('handles await in callee of call expressions', () => {
+  describe("handles await in callee of call expressions", () => {
     ruleTester.run("needless-await-synchronisation", rule, {
       valid: [
         `
@@ -443,7 +442,7 @@ describe('needless-await-synchronisation', () => {
           `,
           errors: [
             { message: "Unneeded synchronisation, please use Promise.all()" },
-            { message: "Unneeded synchronisation, please use Promise.all()" }
+            { message: "Unneeded synchronisation, please use Promise.all()" },
           ],
         },
         {
@@ -455,14 +454,14 @@ describe('needless-await-synchronisation', () => {
           `,
           errors: [
             { message: "Unneeded synchronisation, please use Promise.all()" },
-            { message: "Unneeded synchronisation, please use Promise.all()" }
+            { message: "Unneeded synchronisation, please use Promise.all()" },
           ],
         },
-      ]
+      ],
     });
   });
 
-  describe('handles awaits in try-catch blocks', () => {
+  describe("handles awaits in try-catch blocks", () => {
     ruleTester.run("needless-await-synchronisation", rule, {
       valid: [
         `
@@ -508,7 +507,7 @@ describe('needless-await-synchronisation', () => {
           `,
           errors: [
             { message: "Unneeded synchronisation, please use Promise.all()" },
-            { message: "Unneeded synchronisation, please use Promise.all()" }
+            { message: "Unneeded synchronisation, please use Promise.all()" },
           ],
         },
         {
@@ -524,7 +523,7 @@ describe('needless-await-synchronisation', () => {
           `,
           errors: [
             { message: "Unneeded synchronisation, please use Promise.all()" },
-            { message: "Unneeded synchronisation, please use Promise.all()" }
+            { message: "Unneeded synchronisation, please use Promise.all()" },
           ],
         },
         {
@@ -542,7 +541,7 @@ describe('needless-await-synchronisation', () => {
           `,
           errors: [
             { message: "Unneeded synchronisation, please use Promise.all()" },
-            { message: "Unneeded synchronisation, please use Promise.all()" }
+            { message: "Unneeded synchronisation, please use Promise.all()" },
           ],
         },
         {
@@ -558,14 +557,14 @@ describe('needless-await-synchronisation', () => {
           `,
           errors: [
             { message: "Unneeded synchronisation, please use Promise.all()" },
-            { message: "Unneeded synchronisation, please use Promise.all()" }
+            { message: "Unneeded synchronisation, please use Promise.all()" },
           ],
         },
-      ]
+      ],
     });
   });
 
-  describe('handles assignment expressions', () => {
+  describe("handles assignment expressions", () => {
     ruleTester.run("needless-await-synchronisation", rule, {
       valid: [
         `
@@ -585,13 +584,13 @@ describe('needless-await-synchronisation', () => {
           `,
           errors: [
             { message: "Unneeded synchronisation, please use Promise.all()" },
-            { message: "Unneeded synchronisation, please use Promise.all()" }
+            { message: "Unneeded synchronisation, please use Promise.all()" },
           ],
         },
-      ]
+      ],
     });
   });
-  describe('handles awaits in member expressions', () => {
+  describe("handles awaits in member expressions", () => {
     ruleTester.run("needless-await-synchronisation", rule, {
       valid: [
         `
@@ -611,7 +610,7 @@ describe('needless-await-synchronisation', () => {
           `,
           errors: [
             { message: "Unneeded synchronisation, please use Promise.all()" },
-            { message: "Unneeded synchronisation, please use Promise.all()" }
+            { message: "Unneeded synchronisation, please use Promise.all()" },
           ],
         },
         {
@@ -623,14 +622,14 @@ describe('needless-await-synchronisation', () => {
           `,
           errors: [
             { message: "Unneeded synchronisation, please use Promise.all()" },
-            { message: "Unneeded synchronisation, please use Promise.all()" }
+            { message: "Unneeded synchronisation, please use Promise.all()" },
           ],
         },
-      ]
+      ],
     });
   });
 
-  describe('handles await in object expressions', () => {
+  describe("handles await in object expressions", () => {
     ruleTester.run("needless-await-synchronisation", rule, {
       valid: [
         `
@@ -650,10 +649,10 @@ describe('needless-await-synchronisation', () => {
           `,
           errors: [
             { message: "Unneeded synchronisation, please use Promise.all()" },
-            { message: "Unneeded synchronisation, please use Promise.all()" }
+            { message: "Unneeded synchronisation, please use Promise.all()" },
           ],
         },
-      ]
+      ],
     });
   });
 });
