@@ -1,4 +1,4 @@
-# eslint-plugin-needless-await-synchronisation
+# eslint-plugin-no-needless-sync
 
 A plugin to detect needlessly synchronised async function calls.
 
@@ -10,19 +10,19 @@ You'll first need to install [ESLint](https://eslint.org/):
 npm i eslint --save-dev
 ```
 
-Next, install `eslint-plugin-needless-await-synchronisation`:
+Next, install `eslint-plugin-no-needless-sync`:
 
 ```sh
-npm install eslint-plugin-needless-await-synchronisation --save-dev
+npm install eslint-plugin-no-needless-sync --save-dev
 ```
 
 ## Usage
 
-Add `needless-await-synchronisation` to the plugins section of your `.eslintrc` configuration file. You can omit the `eslint-plugin-` prefix:
+Add `no-needless-sync` to the plugins section of your `.eslintrc` configuration file. You can omit the `eslint-plugin-` prefix:
 
 ```json
 {
-  "plugins": ["needless-await-synchronisation"]
+  "plugins": ["no-needless-sync"]
 }
 ```
 
@@ -31,11 +31,20 @@ Then configure the rules you want to use under the rules section.
 ```json
 {
   "rules": {
-    "needless-await-synchronisation/rule-name": 2
+    "no-needless-sync/needless-await": 2
   }
 }
 ```
 
-## Supported Rules
+## Examples
 
-- Fill in provided rules here
+### Bad
+```javascript
+const a = await getSomething();
+const b = await getOther();
+```
+
+### Good
+```javascript
+const [a, b] = await Promise.all([getSomething(), getOther()]);
+```

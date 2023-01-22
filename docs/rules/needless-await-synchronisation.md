@@ -1,4 +1,4 @@
-# A rule to detect needlessly synchronized async functions (needless-await-synchronisation)
+# A rule to detect needlessly synchronized async functions (needless-await)
 
 Please describe the origin of the rule here.
 

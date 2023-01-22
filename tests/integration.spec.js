@@ -1,7 +1,7 @@
 "use strict";
 
-describe("needless-await-synchronisation", () => {
-  const rule = require("../lib/rules/needless-await-synchronisation"),
+describe("needless-await", () => {
+  const rule = require("../lib/rules/needless-await"),
     RuleTester = require("eslint").RuleTester;
 
   RuleTester.setDefaultConfig({
@@ -13,7 +13,7 @@ describe("needless-await-synchronisation", () => {
   const ruleTester = new RuleTester();
 
   describe("handles a simple case", () => {
-    ruleTester.run("needless-await-synchronisation", rule, {
+    ruleTester.run("needless-await", rule, {
       valid: [
         `
         async function f() {
@@ -39,7 +39,7 @@ describe("needless-await-synchronisation", () => {
     });
   });
   describe("handles an arrow function simple", () => {
-    ruleTester.run("needless-await-synchronisation", rule, {
+    ruleTester.run("needless-await", rule, {
       valid: [
         `
         const f = async () => {
@@ -65,7 +65,7 @@ describe("needless-await-synchronisation", () => {
     });
   });
   describe("handles a simple same argument case", () => {
-    ruleTester.run("needless-await-synchronisation", rule, {
+    ruleTester.run("needless-await", rule, {
       valid: [],
       invalid: [
         {
@@ -88,7 +88,7 @@ describe("needless-await-synchronisation", () => {
   });
 
   describe("handles variables being unused by other awaits", () => {
-    ruleTester.run("needless-await-synchronisation", rule, {
+    ruleTester.run("needless-await", rule, {
       valid: [
         `
         const f = async () => {
@@ -117,7 +117,7 @@ describe("needless-await-synchronisation", () => {
   });
 
   describe("handles many variables being unused by other awaits", () => {
-    ruleTester.run("needless-await-synchronisation", rule, {
+    ruleTester.run("needless-await", rule, {
       valid: [
         `
         const f = async () => {
@@ -161,7 +161,7 @@ describe("needless-await-synchronisation", () => {
     });
   });
   describe("handles variable properties of great depth", () => {
-    ruleTester.run("needless-await-synchronisation", rule, {
+    ruleTester.run("needless-await", rule, {
       valid: [
         `
         const f = async () => {
@@ -189,7 +189,7 @@ describe("needless-await-synchronisation", () => {
     });
   });
   describe("handles functions already in a Promise.all()", () => {
-    ruleTester.run("needless-await-synchronisation", rule, {
+    ruleTester.run("needless-await", rule, {
       valid: [
         `
         const f = async () => {
@@ -217,7 +217,7 @@ describe("needless-await-synchronisation", () => {
     });
   });
   describe("handles destructuring", () => {
-    ruleTester.run("needless-await-synchronisation", rule, {
+    ruleTester.run("needless-await", rule, {
       valid: [
         `
         const f = async () => {
@@ -246,7 +246,7 @@ describe("needless-await-synchronisation", () => {
   });
 
   describe("handles an intermediate dependency", () => {
-    ruleTester.run("needless-await-synchronisation", rule, {
+    ruleTester.run("needless-await", rule, {
       valid: [
         `
         const f = async () => {
@@ -276,7 +276,7 @@ describe("needless-await-synchronisation", () => {
   });
 
   describe("handles an if-statement", () => {
-    ruleTester.run("needless-await-synchronisation", rule, {
+    ruleTester.run("needless-await", rule, {
       valid: [
         `
         const f = async () => {
@@ -363,7 +363,7 @@ describe("needless-await-synchronisation", () => {
   });
 
   describe("handles return statements with await", () => {
-    ruleTester.run("needless-await-synchronisation", rule, {
+    ruleTester.run("needless-await", rule, {
       valid: [
         `
         const f = async () => {
@@ -390,7 +390,7 @@ describe("needless-await-synchronisation", () => {
   });
 
   describe("handles await in array expressions", () => {
-    ruleTester.run("needless-await-synchronisation", rule, {
+    ruleTester.run("needless-await", rule, {
       valid: [
         `
         const f = async () => {
@@ -417,7 +417,7 @@ describe("needless-await-synchronisation", () => {
   });
 
   describe("handles await in callee of call expressions", () => {
-    ruleTester.run("needless-await-synchronisation", rule, {
+    ruleTester.run("needless-await", rule, {
       valid: [
         `
         const f = async () => {
@@ -462,7 +462,7 @@ describe("needless-await-synchronisation", () => {
   });
 
   describe("handles awaits in try-catch blocks", () => {
-    ruleTester.run("needless-await-synchronisation", rule, {
+    ruleTester.run("needless-await", rule, {
       valid: [
         `
         const f = async () => {
@@ -565,7 +565,7 @@ describe("needless-await-synchronisation", () => {
   });
 
   describe("handles assignment expressions", () => {
-    ruleTester.run("needless-await-synchronisation", rule, {
+    ruleTester.run("needless-await", rule, {
       valid: [
         `
         const f = async () => {
@@ -591,7 +591,7 @@ describe("needless-await-synchronisation", () => {
     });
   });
   describe("handles awaits in member expressions", () => {
-    ruleTester.run("needless-await-synchronisation", rule, {
+    ruleTester.run("needless-await", rule, {
       valid: [
         `
         const f = async () => {
@@ -630,7 +630,7 @@ describe("needless-await-synchronisation", () => {
   });
 
   describe("handles await in object expressions", () => {
-    ruleTester.run("needless-await-synchronisation", rule, {
+    ruleTester.run("needless-await", rule, {
       valid: [
         `
         const f = async () => {
