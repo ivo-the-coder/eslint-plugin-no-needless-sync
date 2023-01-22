@@ -548,4 +548,69 @@ describe('needless-await-synchronisation', () => {
       ]
     });
   });
+
+  describe('handles assignment expressions', () => {
+    ruleTester.run("needless-await-synchronisation", rule, {
+      valid: [
+        `
+        const f = async () => {
+          let a = await fa();
+          a = await fb(a);
+        }
+        `,
+      ],
+      invalid: [
+        {
+          code: `
+          const f = async () => {
+            let a = await fa();
+            a = await fb();
+          } 
+          `,
+          errors: [
+            { message: "Unneeded synchronisation, please use Promise.all()" },
+            { message: "Unneeded synchronisation, please use Promise.all()" }
+          ],
+        },
+      ]
+    });
+  });
+  describe('handles awaits in member expressions', () => {
+    ruleTester.run("needless-await-synchronisation", rule, {
+      valid: [
+        `
+        const f = async () => {
+          const a = await fa();
+          c[await fb(a)] = b;
+        }
+        `,
+      ],
+      invalid: [
+        {
+          code: `
+          const f = async () => {
+            const a = await fa();
+            c[await fb()] = b;
+          } 
+          `,
+          errors: [
+            { message: "Unneeded synchronisation, please use Promise.all()" },
+            { message: "Unneeded synchronisation, please use Promise.all()" }
+          ],
+        },
+        {
+          code: `
+          const f = async () => {
+            const a = await fa();
+            (await fc())['d']= b;
+          } 
+          `,
+          errors: [
+            { message: "Unneeded synchronisation, please use Promise.all()" },
+            { message: "Unneeded synchronisation, please use Promise.all()" }
+          ],
+        },
+      ]
+    });
+  });
 });
