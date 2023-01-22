@@ -655,4 +655,49 @@ describe("needless-await", () => {
       ],
     });
   });
+
+  describe("handles ternaries", () => {
+    ruleTester.run("needless-await", rule, {
+      valid: [
+        `
+        const f = async () => {
+          const { data } = await fa();
+          const c = data.a ? await fb(x) : null;
+        }
+        `,
+        `
+        const f = async () => {
+          const { data } = await fa();
+          const c = data.a ? data.b ? await fb(x): null : null
+        }
+        `,
+      ],
+      invalid: [
+        {
+          code: `
+          const f = async (b) => {
+            const { data } = await fa();
+            const c = b ? await fb(x) : null;
+          }
+          `,
+          errors: [
+            { message: "Unneeded synchronisation, please use Promise.all()" },
+            { message: "Unneeded synchronisation, please use Promise.all()" },
+          ],
+        },
+        {
+          code: `
+          const f = async (b) => {
+            const { data } = await fa();
+            const c = a ? b ? await fb(x): null : null;
+          }
+          `,
+          errors: [
+            { message: "Unneeded synchronisation, please use Promise.all()" },
+            { message: "Unneeded synchronisation, please use Promise.all()" },
+          ],
+        },
+      ],
+    });
+  });
 });
