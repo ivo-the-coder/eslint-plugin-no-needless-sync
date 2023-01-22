@@ -613,4 +613,31 @@ describe('needless-await-synchronisation', () => {
       ]
     });
   });
+
+  describe('handles await in object expressions', () => {
+    ruleTester.run("needless-await-synchronisation", rule, {
+      valid: [
+        `
+        const f = async () => {
+          const a = await fa();
+          c = { c: await fb(a) };
+        }
+        `,
+      ],
+      invalid: [
+        {
+          code: `
+          const f = async () => {
+            const a = await fa();
+            c = { c: await fb() };
+          } 
+          `,
+          errors: [
+            { message: "Unneeded synchronisation, please use Promise.all()" },
+            { message: "Unneeded synchronisation, please use Promise.all()" }
+          ],
+        },
+      ]
+    });
+  });
 });
