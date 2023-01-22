@@ -545,6 +545,22 @@ describe('needless-await-synchronisation', () => {
             { message: "Unneeded synchronisation, please use Promise.all()" }
           ],
         },
+        {
+          code: `
+          const f = async () => {
+            try {
+              const a = fa();
+            } catch (e) {
+              const c = await fc();
+              const b = await fb();
+            }
+          }
+          `,
+          errors: [
+            { message: "Unneeded synchronisation, please use Promise.all()" },
+            { message: "Unneeded synchronisation, please use Promise.all()" }
+          ],
+        },
       ]
     });
   });
