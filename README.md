@@ -48,3 +48,25 @@ const b = await getOther();
 ```javascript
 const [a, b] = await Promise.all([getSomething(), getOther()]);
 ```
+
+```javascript
+// Note here b depends on the output of getSomething, so that's fine
+const a = await getSomething();
+const b = await getOther(a);
+```
+
+### Bad
+```javascript
+// Even though getSomething and getOther are parallelised,
+// getFinal can also be included in the Promise.all call
+const [a, b] = await Promise.all([getSomething(), getOther()]);
+const c = await getFinal();
+```
+
+### Good
+```javascript
+const [a, b, c] = await Promise.all([getSomething(), getOther(), getFinal()]);
+```
+
+## Support for more complex code
+The rule can handle cases such as array and object assignments, dependencies inherited through the test clause of an if-statement, try-catch blocks. You can see explicitly supported cases in the [integration spec](https://github.com/ivo-the-coder/eslint-plugin-no-needless-sync/blob/master/tests/integration.spec.js).
