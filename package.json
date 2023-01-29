@@ -12,7 +12,7 @@
   "scripts": {
     "lint": "eslint .",
     "test:unit": "jest \"^.*(lib).*.spec.js\"",
-    "test:integration": "jest \"^.*(tests).*/integration.spec.js\""
+    "test:integration": "jest \"^.*(tests).*/integration.*\""
   },
   "dependencies": {
     "requireindex": "^1.2.0"
