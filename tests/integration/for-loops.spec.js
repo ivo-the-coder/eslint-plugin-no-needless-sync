@@ -38,7 +38,7 @@ describe("needless-await", () => {
             await fc(data);
           }
         }
-        `,  
+        `,
         `
         const f = async () => {
           let data;
@@ -47,7 +47,7 @@ describe("needless-await", () => {
           }
           return await f(data);
         }
-        `,  
+        `,
       ],
       invalid: [
         {

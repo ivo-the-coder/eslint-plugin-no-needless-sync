@@ -2,7 +2,7 @@
 
 describe("needless-await", () => {
   const rule = require("../../lib/rules/needless-await"),
-  RuleTester = require("eslint").RuleTester;
+    RuleTester = require("eslint").RuleTester;
 
   RuleTester.setDefaultConfig({
     parserOptions: {
@@ -114,5 +114,4 @@ describe("needless-await", () => {
       ],
     });
   });
-
 });

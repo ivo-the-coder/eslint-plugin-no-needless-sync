@@ -185,5 +185,4 @@ describe("needless-await", () => {
       ],
     });
   });
-
 });
