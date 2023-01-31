@@ -168,6 +168,12 @@ describe("needless-await", () => {
           return await fb(data);
         }
         `,
+        `
+        const f = async () => {
+          const { data } = await fa();
+          return;
+        }
+        `,
       ],
       invalid: [
         {
@@ -175,6 +181,19 @@ describe("needless-await", () => {
           const f = async () => {
             const { data } = await fa();
             return await fb();
+          } 
+          `,
+          errors: [
+            { message: "Unneeded synchronisation, please use Promise.all()" },
+            { message: "Unneeded synchronisation, please use Promise.all()" },
+          ],
+        },
+        {
+          code: `
+          const f = async () => {
+            const { data } = await fa();
+            await fb();
+            return;
           } 
           `,
           errors: [
