@@ -74,10 +74,33 @@ const [a, b, c] = await Promise.all([getSomething(), getOther(), getFinal()]);
 
 ## Support for more complex code
 
-The rule can handle cases such as array and object assignments, dependencies inherited through the test clause of an if-statement, try-catch blocks. You can see explicitly supported cases in the [integration spec](https://github.com/ivo-the-coder/eslint-plugin-no-needless-sync/blob/master/tests/integration.spec.js).
+The rule can handle cases such as array and object assignments, dependencies inherited through the test clause of an if-statement, try-catch blocks.
+
+### Bad
+```javascript
+const a = await getSomething();
+if (unrelatedCondition) {
+  await postSomething();
+}
+```
+
+### Good
+```javascript
+const { data: { shouldPost } } = await getSomething();
+if (shouldPost) {
+  await postSomething();
+}
+```
+
+You can see explicitly supported cases in the [integration spec](https://github.com/ivo-the-coder/eslint-plugin-no-needless-sync/blob/master/tests/integration.spec.js).
 
 ## Other useful additions
 
 Please refer to the following:
 
 - [No await in loop](https://eslint.org/docs/latest/rules/no-await-in-loop)
+
+## When not to use this rule
+
+When your code has implicit dependencies, e.g. you depend on errors being thrown in order to interrupt the control flow of
+your application, it is recommended to exclude the rule via a standard ESlint disable comment.
