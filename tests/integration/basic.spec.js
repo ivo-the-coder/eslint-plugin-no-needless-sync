@@ -185,4 +185,52 @@ describe("needless-await", () => {
       ],
     });
   });
+
+  describe("handles instantiating objects from class", () => {
+    ruleTester.run("needless-await", rule, {
+      valid: [
+        `
+        const f = async () => {
+          const { data } = await fa();
+          const dataParser = new DataParser(data);
+          await fb(dataParser.parse());
+        }
+        `,
+        `
+        const f = async () => {
+          const dataParser = new DataParser(await fa());
+          await fb(dataParser.parse());
+        }
+        `,
+      ],
+      invalid: [
+        {
+          code: `
+          const f = async () => {
+            const { data } = await fa();
+            const dataPoster = new DataPoster();
+            await dataPoster.post();
+          } 
+          `,
+          errors: [
+            { message: "Unneeded synchronisation, please use Promise.all()" },
+            { message: "Unneeded synchronisation, please use Promise.all()" },
+          ],
+        },
+        {
+          code: `
+          const f = async () => {
+            const { data } = await fa();
+            const dataPoster = new DataPoster(await fc());
+            await dataPoster.post(data);
+          } 
+          `,
+          errors: [
+            { message: "Unneeded synchronisation, please use Promise.all()" },
+            { message: "Unneeded synchronisation, please use Promise.all()" },
+          ],
+        },
+      ],
+    });
+  });
 });
