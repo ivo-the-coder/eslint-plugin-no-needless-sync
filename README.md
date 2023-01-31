@@ -77,6 +77,7 @@ const [a, b, c] = await Promise.all([getSomething(), getOther(), getFinal()]);
 The rule can handle cases such as array and object assignments, dependencies inherited through the test clause of an if-statement, try-catch blocks.
 
 ### Bad
+
 ```javascript
 const a = await getSomething();
 if (unrelatedCondition) {
@@ -85,8 +86,11 @@ if (unrelatedCondition) {
 ```
 
 ### Good
+
 ```javascript
-const { data: { shouldPost } } = await getSomething();
+const {
+  data: { shouldPost },
+} = await getSomething();
 if (shouldPost) {
   await postSomething();
 }

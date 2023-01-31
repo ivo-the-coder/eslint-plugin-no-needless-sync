@@ -49,6 +49,16 @@ describe("needless-await", () => {
           }
         }
         `,
+        `
+        const f = async () => {
+          const fc = async () => {
+            if (b) {
+              await fb();
+            }
+          }
+          const [{ data }, _] = await Promise.all([fa(), fc()]);
+        }
+        `,
       ],
       invalid: [
         {
